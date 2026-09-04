@@ -15,7 +15,7 @@ fstream ficheiro("jogoDoGalo.txt", ios::in | ios::out | ios::app); // ONDE COLOC
 void guardarJogador(ofstream &ficheiro, string nomeJogador, int numPartidas,
                     int vitorias, int derrotas, int empates)
 {
-    ficheiro << "Nome: " << nomeJogador << "\nNumero de partidas: " << numPartidas << "\nVitorias: " << vitorias << "\nDerrotas: " << derrotas << "\nEmpates: " << empates << endl;
+    ficheiro << "Name: " << nomeJogador << "\nNumero de partidas: " << numPartidas << "\nVitorias: " << vitorias << "\nDerrotas: " << derrotas << "\nEmpates: " << empates << endl;
 }
 
 bool mostrarJogador(ifstream &ficheiro, string &nomeJogador, int &numPartidas,
