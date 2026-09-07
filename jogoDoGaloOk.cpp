@@ -97,32 +97,33 @@ int main()
                 mostrarTabuleiro(jogo);
                 cout << "\n\nVoces terao que escolher uma posicao de acordo com os numeros mostrados!\n";
 
-                do
+                for (int jogada = 0; jogada < 9; jogada++)
                 {
-                    for (int jogada = 0; jogada < 9; jogada++)
+
+                    if (jogada % 2 == 0)
+                    {
+                        jogadorAtual = jogador1; // descobrir como colocar o nome do jogador
+
+                        cout << "\n\n"
+                             << nomeJogador1 << ", ";
+                    }
+
+                    else
                     {
 
-                        if (jogada % 2 == 0)
-                        {
-                            jogadorAtual = jogador1; // descobrir como colocar o nome do jogador
+                        jogadorAtual = jogador2;
+                        cout << "\n\n"
+                             << nomeJogador2 << ", ";
+                    }
 
-                            cout << "\n\n"
-                                 << nomeJogador1 << ", ";
-                        }
+                    cout << "qual a posicao que deseja realizar a jogada? ";
+                    cout << "Escolha a linha (entre 1 e 3): ";
+                    cin >> linha;
+                    cout << "Escolha a coluna (entre 1 e 3): ";
+                    cin >> coluna;
 
-                        else
-                        {
-
-                            jogadorAtual = jogador2;
-                            cout << "\n\n"
-                                 << nomeJogador2 << ", ";
-                        }
-
-                        cout << "qual a posicao que deseja realizar a jogada? ";
-                        cout << "Escolha a linha (entre 1 e 3): ";
-                        cin >> linha;
-                        cout << "Escolha a coluna (entre 1 e 3): ";
-                        cin >> coluna;
+                    while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
+                    {
 
                         if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
                         {
@@ -135,38 +136,45 @@ int main()
                             cout << "\n\nPosicao ocupada! Escolha outra posicao!";
                         }
 
-                        *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
-
-                        if (
-                            (jogo[0][0] == jogadorAtual && jogo[0][1] == jogadorAtual && jogo[0][2] == jogadorAtual) ||
-                            (jogo[1][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[1][2] == jogadorAtual) ||
-                            (jogo[2][0] == jogadorAtual && jogo[2][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-
-                            (jogo[0][0] == jogadorAtual && jogo[1][0] == jogadorAtual && jogo[2][0] == jogadorAtual) ||
-                            (jogo[0][1] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][1] == jogadorAtual) ||
-                            (jogo[0][2] == jogadorAtual && jogo[1][2] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-
-                            (jogo[0][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-                            (jogo[0][2] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][0] == jogadorAtual))
-                        {
-                            cout << "\nO jogador " << jogadorAtual << " venceu!\n";
-                            mostrarTabuleiro(jogo);
-                            break;
-                        }
-
-                        if (jogada == 8)
-                        {
-
-                            cout << "Empate!\n";
-                            mostrarTabuleiro(jogo);
-                            break;
-                        }
-
-                        cout << "\n\n";
-
-                        mostrarTabuleiro(jogo);
+                        cout << "\n\nQual a posicao que deseja realizar a jogada?";
+                        cout << "Escolha a linha (entre 1 e 3):";
+                        cin >> linha;
+                        cout << "Escolha a coluna (entre 1 e 3): \n";
+                        cin >> coluna;
+                        // descobrir como tirar esse codigo repetido
                     }
-                } while ((linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' '));
+
+                    *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
+
+                    if (
+                        (jogo[0][0] == jogadorAtual && jogo[0][1] == jogadorAtual && jogo[0][2] == jogadorAtual) ||
+                        (jogo[1][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[1][2] == jogadorAtual) ||
+                        (jogo[2][0] == jogadorAtual && jogo[2][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
+
+                        (jogo[0][0] == jogadorAtual && jogo[1][0] == jogadorAtual && jogo[2][0] == jogadorAtual) ||
+                        (jogo[0][1] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][1] == jogadorAtual) ||
+                        (jogo[0][2] == jogadorAtual && jogo[1][2] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
+
+                        (jogo[0][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
+                        (jogo[0][2] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][0] == jogadorAtual))
+                    {
+                        cout << "\nO jogador " << jogadorAtual << " venceu!\n";
+                        mostrarTabuleiro(jogo);
+                        break;
+                    }
+
+                    if (jogada == 8)
+                    {
+
+                        cout << "Empate!\n";
+                        mostrarTabuleiro(jogo);
+                        break;
+                    }
+
+                    cout << "\n\n";
+
+                    mostrarTabuleiro(jogo);
+                }
             }
             else if (opcao == 2)
             {
