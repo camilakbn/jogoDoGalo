@@ -56,13 +56,9 @@ int main()
     char jogadorAtual;
     string nomeJogador1 = "";
     string nomeJogador2 = "";
+
     int finalJogo;
     int opcao;
-    // salvar essas variáveis
-    int numPartidas;
-    int vitorias;
-    int derrotas;
-    int empates;
 
     /*char *ponteiro = nullptr;*/
 
@@ -106,14 +102,18 @@ int main()
 
                     if (jogada % 2 == 0)
                     {
-                        jogadorAtual = jogador1;
-                        cout << "\n\n" << nomeJogador1 << ", ";
+                        jogadorAtual = jogador1; // descobrir como colocar o nome do jogador
+
+                        cout << "\n\n"
+                             << nomeJogador1 << ", ";
                     }
 
                     else
                     {
+
                         jogadorAtual = jogador2;
-                        cout << "\n\n"<< nomeJogador2 << ", ";
+                        cout << "\n\n"
+                             << nomeJogador2 << ", ";
                     }
 
                     cout << "qual a posicao que deseja realizar a jogada? ";
@@ -158,38 +158,29 @@ int main()
                         (jogo[0][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
                         (jogo[0][2] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][0] == jogadorAtual))
                     {
-                        if (jogadorAtual == jogador1)
-                        {
-                            cout << "\n" << nomeJogador1 << " venceu!\n";
-                            break;
-                        }
-                        else if (jogadorAtual == jogador2)
-                        {
-                            cout << "\n" << nomeJogador2 << " venceu!\n";
-                            break;
-                        }
+                        cout << "\nO jogador " << jogadorAtual << " venceu!\n";
+                        mostrarTabuleiro(jogo);
+                        break;
                     }
 
                     if (jogada == 8)
                     {
 
-                        cout << "Empate!\n\n";
+                        cout << "Empate!\n";
+                        mostrarTabuleiro(jogo);
                         break;
                     }
 
+                    cout << "\n\n";
+
                     mostrarTabuleiro(jogo);
                 }
-
-                mostrarTabuleiro(jogo);
             }
             else if (opcao == 2)
             {
-                //adicionar o boot
             }
             else if (opcao == 3)
             {
-                //adicionar as estatísticas
-                
                 ifstream in("jogoDoGalo.txt");
                 string nomeJogador;
                 int numPartidas;
