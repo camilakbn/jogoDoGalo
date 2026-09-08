@@ -158,9 +158,18 @@ int main()
                         (jogo[0][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
                         (jogo[0][2] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][0] == jogadorAtual))
                     {
-                        cout << "\nO jogador " << jogadorAtual << " venceu!\n";
-                        mostrarTabuleiro(jogo);
-                        break;
+                        if (jogadorAtual == jogador1)
+                        {
+                            cout << "\n"
+                                 << nomeJogador1 << " venceu!\n";
+                            break;
+                        }
+                        else if (jogadorAtual == jogador2)
+                        {
+                            cout << "\n"
+                                 << nomeJogador2 << " venceu!\n";
+                            break;
+                        }
                     }
 
                     if (jogada == 8)
