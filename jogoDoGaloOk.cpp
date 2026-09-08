@@ -9,13 +9,11 @@ tema: jogo do galo (jogo da velha)
 entrega do código: 11/09
 apresentação: 16/09*/
 
-fstream ficheiro("jogoDoGalo.txt", ios::in | ios::out | ios::app); // ONDE COLOCAR ISSO, ANTES OU DEPOIS DO MAIN, OU
-// DENTRO DA FUNÇÃO
-
 void guardarJogador(ofstream &ficheiro, string nomeJogador, int numPartidas,
                     int vitorias, int derrotas, int empates)
 {
-    ficheiro << "Name: " << nomeJogador << "\nNumero de partidas: " << numPartidas << "\nVitorias: " << vitorias << "\nDerrotas: " << derrotas << "\nEmpates: " << empates << endl;
+    ficheiro << nomeJogador << " " << numPartidas << " "
+             << vitorias << " " << derrotas << " " << empates << endl;
 }
 
 bool mostrarJogador(ifstream &ficheiro, string &nomeJogador, int &numPartidas,
@@ -47,28 +45,26 @@ void mostrarTabuleiro(char jogo[3][3])
 
 int main()
 {
-    ofstream ficheiro("jogoDoGalo.txt");
 
-    char jogo[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
     int linha, coluna;
     char jogador1 = 'X';
     char jogador2 = 'O';
     char jogadorAtual;
     string nomeJogador1 = "";
     string nomeJogador2 = "";
-
+    string nomeJogador = "";
+    int numPartidasJ1 = 0;
+    int numPartidasJ2 = 0;
+    int vitoriasJ1 = 0;
+    int vitoriasJ2 = 0;
+    int derrotasJ1 = 0;
+    int derrotasJ2 = 0;
+    int empatesJ1 = 0;
+    int empatesJ2 = 0;
     int finalJogo;
     int opcao;
-
-    /*char *ponteiro = nullptr;*/
-
     char posicao;
-
-    if (!ficheiro.is_open())
-    {
-        cout << "Erro ao abrir ficheiro";
-        return 1;
-    }
+    int nivelBoot;
 
     do
     {
@@ -85,7 +81,9 @@ int main()
 
             if (opcao == 1)
             {
-                // receber o espaço do int
+
+                char jogo[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+
                 cout << "Insira o nome do primeiro jogador: ";
                 getline(cin >> ws, nomeJogador1);
 
@@ -95,7 +93,6 @@ int main()
                 cout << "O jogador 1 sera o 'X' e o jogador 2 sera o 'O'\n\n";
                 cout << "Aqui esta o jogo da velha:\n";
                 mostrarTabuleiro(jogo);
-                cout << "\n\nVoces terao que escolher uma posicao de acordo com os numeros mostrados!\n";
 
                 for (int jogada = 0; jogada < 9; jogada++)
                 {
@@ -103,7 +100,6 @@ int main()
                     if (jogada % 2 == 0)
                     {
                         jogadorAtual = jogador1; // descobrir como colocar o nome do jogador
-
                         cout << "\n\n"
                              << nomeJogador1 << ", ";
                     }
@@ -162,45 +158,97 @@ int main()
                         {
                             cout << "\n"
                                  << nomeJogador1 << " venceu!\n";
-                            break;
+                            numPartidasJ1++;
+                            vitoriasJ1++;
+                            numPartidasJ2++;
+                            derrotasJ2++;
                         }
                         else if (jogadorAtual == jogador2)
                         {
                             cout << "\n"
                                  << nomeJogador2 << " venceu!\n";
-                            break;
+                            numPartidasJ2++;
+                            vitoriasJ2++;
+                            numPartidasJ1++;
+                            derrotasJ1++;
                         }
+
+                        ofstream ficheiro("jogoDoGalo.txt", ios::app);
+                        if (ficheiro.is_open())
+                        {
+                            guardarJogador(ficheiro, nomeJogador1, numPartidasJ1, vitoriasJ1, derrotasJ1, empatesJ1);
+                            guardarJogador(ficheiro, nomeJogador2, numPartidasJ2, vitoriasJ2, derrotasJ2, empatesJ2);
+                            ficheiro.close();
+                        }
+                        break;
                     }
 
                     if (jogada == 8)
                     {
 
                         cout << "Empate!\n";
+                        numPartidasJ1++;
+                        numPartidasJ2++;
+                        empatesJ1++;
+                        empatesJ2++;
+
+                        ofstream ficheiro("jogoDoGalo.txt", ios::app);
+                        if (ficheiro.is_open())
+                        {
+                            guardarJogador(ficheiro, nomeJogador1, numPartidasJ1, vitoriasJ1, derrotasJ1, empatesJ1);
+                            guardarJogador(ficheiro, nomeJogador2, numPartidasJ2, vitoriasJ2, derrotasJ2, empatesJ2);
+                            ficheiro.close();
+                        }
                         mostrarTabuleiro(jogo);
                         break;
                     }
 
                     cout << "\n\n";
-
                     mostrarTabuleiro(jogo);
                 }
             }
             else if (opcao == 2)
             {
+                do
+                {
+                    cout << "Voce escolheu a opcao de jogar contra o computador\nVoce pode escolher entre dois niveis\n1 - Facil\n2 - Dificil\nEscolha um: ";
+                    cin >> nivelBoot;
+                    if (nivelBoot == 1){
+                        cout << "Bem-vindo ao nivel facil!\n";
+                        //add codigo
+                    }
+                    else if(nivelBoot == 2){
+                        cout << "Bem-vindo ao nivel dificil!\n";
+                        //add codigo
+                    }
+                    else{
+                        cout << "Escolha invalida!\n\n";
+                    }
+                } while (nivelBoot < 1 || nivelBoot > 2);
             }
             else if (opcao == 3)
             {
-                ifstream in("jogoDoGalo.txt");
-                string nomeJogador;
+                ifstream ficheiro("jogoDoGalo.txt");
                 int numPartidas;
                 int vitorias;
                 int derrotas;
                 int empates;
-                while (in >> nomeJogador >> numPartidas >> vitorias >> derrotas >> empates)
+
+                if (!ficheiro.is_open())
                 {
-                    cout << nomeJogador << "->" << numPartidas << "->" << vitorias << "->" << derrotas << "->" << empates << endl;
+                    cout << "Erro ao abrir ficheiro\n";
+                    return 1;
                 }
-                in.close();
+                else
+                {
+                    cout << "Estatisticas: \n";
+
+                    while (ficheiro >> nomeJogador >> numPartidas >> vitorias >> derrotas >> empates)
+                    {
+                        cout << "Jogador -> " << nomeJogador << ": Partidas: " << numPartidas << " | Vitorias: " << vitorias << " | Derrotas: " << derrotas << " | Empates: " << empates << endl;
+                    }
+                    ficheiro.close();
+                }
             }
             else
             {
@@ -208,13 +256,10 @@ int main()
             }
         } while (opcao < 1 || opcao > 4);
 
-        cout << "\n\nDeseja iniciar uma nova partida?\n1 - Sim\n2 - Nao\n";
+        cout << "\n\nDeseja voltar ao menu inicial?\n1 - Sim\n2 - Nao\n";
         cin >> finalJogo;
 
     } while (finalJogo == 1);
-
-    ficheiro << jogador1 << endl;
-    ficheiro.close();
 
     return 0;
 }
