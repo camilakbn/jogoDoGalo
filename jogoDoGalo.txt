@@ -1,2 +1,3 @@
-Camila 1 1 0 0
-Betania 1 0 1 0
+Camila 6 2 1 3
+Betania 2 1 1 0
+Sarah 1 0 0 1
