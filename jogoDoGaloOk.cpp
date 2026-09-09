@@ -11,6 +11,12 @@ tema: jogo do galo (jogo da velha)
 entrega do código: 11/09
 apresentação: 16/09*/
 
+// add um timer ou uma matriz ao lado da matriz ou uma matriz so no inicio
+// parar o empate antes da ultima jogada
+// bot ficou com posicao ocupada e nao repetiu, consertar isso
+// tentar adicionar uma linha do ganhador
+// ajeitar pra o X sempre começar primeiro
+
 void mostrarTabuleiro(char jogo[3][3])
 {
     for (int i = 0; i < 3; i++)
@@ -226,6 +232,7 @@ int main()
     string nomeJogador1 = "";
     string nomeJogador2 = "";
     string nomeJogador = "";
+    int escolha;
     int finalJogo;
     int opcao;
     char posicao;
@@ -239,7 +246,7 @@ int main()
 
         do
         {
-            cout << "Bem vindo ao Jogo do Galo!\n\n";
+            cout << "=========BEM VINDO AO JOGO DO GALO=========\n\n";
             cout << "Escolha entre as opcoes: \n";
             cout << "1 - Jogador vs Jogador\n";
             cout << "2 - Jogador vs Computador\n";
@@ -258,7 +265,24 @@ int main()
                 cout << "Insira o nome do segundo jogador: ";
                 getline(cin >> ws, nomeJogador2);
 
-                cout << "O jogador 1 sera o 'X' e o jogador 2 sera o 'O'\n\n";
+                /*do
+                {
+                    //CONSERTAR ISSO E O JOGADOR INTELIGENTE
+                    cout << nomeJogador1 << ", voce quer ser 'X ou 'O'?\nDigite: 1 - 'X'\n2 - 'O'";
+                    cin >> escolha;
+                    if (escolha == 1)
+                    {
+                        jogador1 = 'X';
+                        jogador2 = 'O';
+                    }
+                    else
+                    {
+                        jogador1 = 'O';
+                        jogador2 = 'X';
+                    }
+                } while (escolha < 1 || escolha > 2);*/
+
+                cout << nomeJogador1 << " sera " << jogador1 << " e " << nomeJogador2 << " sera " << jogador2 << "\n\n";
                 cout << "Aqui esta o jogo da velha:\n";
                 mostrarTabuleiro(jogo);
 
@@ -329,8 +353,8 @@ int main()
                     {
                         if (jogadorAtual == jogador1)
                         {
-                            cout << "\n"
-                                 << nomeJogador1 << " venceu!\n";
+                            cout << "\n\n"
+                                 << nomeJogador1 << " venceu!\n\n";
 
                             mostrarTabuleiro(jogo);
 
@@ -340,8 +364,8 @@ int main()
                         }
                         else if (jogadorAtual == jogador2)
                         {
-                            cout << "\n"
-                                 << nomeJogador2 << " venceu!\n";
+                            cout << "\n\n"
+                                 << nomeJogador2 << " venceu!\n\n";
 
                             mostrarTabuleiro(jogo);
 
@@ -356,7 +380,7 @@ int main()
                     if (jogada == 8)
                     {
 
-                        cout << "Empate!\n";
+                        cout << "\n\nEmpate!\n\n";
 
                         mostrarTabuleiro(jogo);
 
@@ -388,6 +412,7 @@ int main()
                         cout << "Aqui esta o jogo da velha:\n";
                         mostrarTabuleiro(jogo);
 
+                        // add codigo
                         for (int jogada = 0; jogada < 9; jogada++)
                         {
 
@@ -400,29 +425,6 @@ int main()
                                 cin >> linha;
                                 cout << "Escolha a coluna (entre 1 e 3): ";
                                 cin >> coluna;
-
-                                // 1 funcao
-                                while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
-                                {
-
-                                    if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
-                                    {
-
-                                        cout << "\n\nPosicao invalida! Escolha outra posicao!";
-                                    }
-
-                                    else if (*(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
-                                    {
-                                        cout << "\n\nPosicao ocupada! Escolha outra posicao!";
-                                    }
-
-                                    cout << "\n\nQual a posicao que deseja realizar a jogada?";
-                                    cout << "Escolha a linha (entre 1 e 3):";
-                                    cin >> linha;
-                                    cout << "Escolha a coluna (entre 1 e 3): \n";
-                                    cin >> coluna;
-                                }
-                                // ate aqui
                             }
 
                             else
@@ -433,6 +435,29 @@ int main()
                                 linha = (rand() % 3 + 1);
                                 coluna = (rand() % 3 + 1);
                             }
+
+                            // 1 funcao
+                            while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
+                            {
+
+                                if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
+                                {
+
+                                    cout << "\n\nPosicao invalida! Escolha outra posicao!";
+                                }
+
+                                else if (*(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
+                                {
+                                    cout << "\n\nPosicao ocupada! Escolha outra posicao!";
+                                }
+
+                                cout << "\n\nQual a posicao que deseja realizar a jogada?";
+                                cout << "Escolha a linha (entre 1 e 3):";
+                                cin >> linha;
+                                cout << "Escolha a coluna (entre 1 e 3): \n";
+                                cin >> coluna;
+                            }
+                            // ate aqui
 
                             *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
 

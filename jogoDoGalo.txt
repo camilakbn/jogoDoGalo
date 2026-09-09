@@ -1,6 +1,12 @@
 Camila
-8 6 2 0
+11 8 2 1
 Betania
 2 0 2 0
 Sarah
+2 2 0 0
+Pedro
+5 4 0 1
+pedro
+1 1 0 0
+camila
 2 2 0 0
