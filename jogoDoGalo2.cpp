@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 /*grupo 3: camila, betânia, sarah
@@ -39,8 +41,10 @@ void guardarJogador(string nomeJogador, int partida, int vitoria, int derrota, i
     ifstream entrada("jogoDoGalo.txt");
     if (entrada.is_open())
     {
-        while (entrada >> nomes[total] >> partidas[total] >> vitorias[total] >> derrotas[total] >> empates[total])
+        while (getline(entrada, nomes[total]))
         {
+            entrada >> partidas[total] >> vitorias[total] >> derrotas[total] >> empates[total];
+            entrada >> ws;
             total++;
         }
         entrada.close();
@@ -75,8 +79,8 @@ void guardarJogador(string nomeJogador, int partida, int vitoria, int derrota, i
     {
         for (int i = 0; i < total; i++)
         {
-            saida << nomes[i] << " " << partidas[i] << " "
-                  << vitorias[i] << " " << derrotas[i] << " " << empates[i] << endl;
+            saida << nomes[i] << endl;
+            saida << partidas[i] << " " << vitorias[i] << " " << derrotas[i] << " " << empates[i] << endl;
         }
         saida.close();
     }
@@ -94,9 +98,13 @@ bool mostrarJogador(ifstream &ficheiro, string &nomeJogador, int &numPartidas,
     {
         cout << "Estatisticas: \n";
 
-        while (ficheiro >> nomeJogador >> numPartidas >> vitorias >> derrotas >> empates)
+        while (getline(ficheiro, nomeJogador) && (ficheiro >> numPartidas >> vitorias >> derrotas >> empates))
         {
-            cout << "Jogador -> " << nomeJogador << ": Partidas: " << numPartidas << " | Vitorias: " << vitorias << " | Derrotas: " << derrotas << " | Empates: " << empates << endl;
+            cout << "Jogador -> " << nomeJogador << ": Partidas: " << numPartidas
+                 << " | Vitorias: " << vitorias << " | Derrotas: " << derrotas
+                 << " | Empates: " << empates << endl;
+
+            ficheiro >> ws;
         }
         ficheiro.close();
         return true;
@@ -223,6 +231,8 @@ int main()
     char posicao;
     int nivelBoot;
     char pcInteligente = 'O';
+    char boot = 'O';
+    srand(time(0));
 
     do
     {
@@ -368,6 +378,116 @@ int main()
                         cout << "Bem-vindo ao nivel facil!\n";
 
                         // add codigo
+
+                        char jogo[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+
+                        cout << "Insira o nome do jogador: ";
+                        getline(cin >> ws, nomeJogador1);
+
+                        cout << "O jogador sera o 'X' e o computador sera o 'O'\n\n";
+                        cout << "Aqui esta o jogo da velha:\n";
+                        mostrarTabuleiro(jogo);
+
+                        // add codigo
+                        for (int jogada = 0; jogada < 9; jogada++)
+                        {
+
+                            if (jogada % 2 == 0)
+                            {
+                                jogadorAtual = jogador1;
+                                cout << "\n\n"
+                                     << nomeJogador1 << ", qual a posicao que deseja realizar a jogada? ";
+                                cout << "Escolha a linha (entre 1 e 3): ";
+                                cin >> linha;
+                                cout << "Escolha a coluna (entre 1 e 3): ";
+                                cin >> coluna;
+
+                                // 1 funcao
+                                while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
+                                {
+
+                                    if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
+                                    {
+
+                                        cout << "\n\nPosicao invalida! Escolha outra posicao!";
+                                    }
+
+                                    else if (*(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
+                                    {
+                                        cout << "\n\nPosicao ocupada! Escolha outra posicao!";
+                                    }
+
+                                    cout << "\n\nQual a posicao que deseja realizar a jogada?";
+                                    cout << "Escolha a linha (entre 1 e 3):";
+                                    cin >> linha;
+                                    cout << "Escolha a coluna (entre 1 e 3): \n";
+                                    cin >> coluna;
+                                }
+                                // ate aqui
+                            }
+
+                            else
+                            {
+                                cout << "\n\nJogada do computador: \n";
+                                jogadorAtual = boot;
+                                cout << "\n\nBoot (O):";
+                                linha = (rand() % 3 + 1);
+                                coluna = (rand() % 3 + 1);
+                            }
+
+                            *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
+
+                            cout << "\n";
+                            mostrarTabuleiro(jogo);
+
+                            // 1 funcao vencedor
+                            if (
+                                (jogo[0][0] == jogadorAtual && jogo[0][1] == jogadorAtual && jogo[0][2] == jogadorAtual) ||
+                                (jogo[1][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[1][2] == jogadorAtual) ||
+                                (jogo[2][0] == jogadorAtual && jogo[2][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
+
+                                (jogo[0][0] == jogadorAtual && jogo[1][0] == jogadorAtual && jogo[2][0] == jogadorAtual) ||
+                                (jogo[0][1] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][1] == jogadorAtual) ||
+                                (jogo[0][2] == jogadorAtual && jogo[1][2] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
+
+                                (jogo[0][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
+                                (jogo[0][2] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][0] == jogadorAtual))
+                            {
+                                if (jogadorAtual == jogador1)
+                                {
+                                    cout << "\n"
+                                         << nomeJogador1 << " venceu!\n";
+
+                                    mostrarTabuleiro(jogo);
+
+                                    guardarJogador(nomeJogador1, 1, 1, 0, 0);
+                                    break;
+                                }
+                                else if (jogadorAtual == boot)
+                                {
+                                    cout << "\nO computador venceu!\n";
+
+                                    mostrarTabuleiro(jogo);
+
+                                    guardarJogador(nomeJogador1, 1, 0, 1, 0);
+                                    break;
+                                }
+                            }
+                            // ate aqui
+
+                            // 1 funcao empate
+                            if (jogada == 8)
+                            {
+
+                                cout << "\n\nEmpate!\n";
+
+                                mostrarTabuleiro(jogo);
+
+                                guardarJogador(nomeJogador1, 1, 0, 0, 1);
+                                break;
+                            }
+                            // ate aqui
+                        }
                     }
                     else if (nivelBoot == 2)
                     {
@@ -498,11 +618,8 @@ int main()
                 }
                 else
                 {
-
                     mostrarJogador(ficheiro, nomeJogador, numPartidas,
                                    vitorias, derrotas, empates);
-
-                    ficheiro.close();
                 }
             }
             else
