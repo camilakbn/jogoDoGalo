@@ -13,7 +13,7 @@ apresentação: 16/09*/
 
 // add um timer ou uma matriz ao lado da matriz ou uma matriz so no inicio
 // parar o empate antes da ultima jogada
-// bot ficou com posicao ocupada e nao repetiu, consertar isso
+// bot iniciante ficou com posicao ocupada e nao repetiu, consertar isso
 // tentar adicionar uma linha do ganhador
 // ajeitar pra o X sempre começar primeiro
 
@@ -267,7 +267,7 @@ int main()
 
                 /*do
                 {
-                    //CONSERTAR ISSO E O JOGADOR INTELIGENTE
+                    //CONSERTAR ISSO
                     cout << nomeJogador1 << ", voce quer ser 'X ou 'O'?\nDigite: 1 - 'X'\n2 - 'O'";
                     cin >> escolha;
                     if (escolha == 1)
@@ -288,31 +288,28 @@ int main()
 
                 for (int jogada = 0; jogada < 9; jogada++)
                 {
-
-                    if (jogada % 2 == 0)
+                    do
                     {
-                        jogadorAtual = jogador1;
-                        cout << "\n\n"
-                             << nomeJogador1 << ", ";
-                    }
+                        if (jogada % 2 == 0)
+                        {
+                            jogadorAtual = jogador1;
+                            cout << "\n\n"
+                                 << nomeJogador1 << ", ";
+                        }
 
-                    else
-                    {
+                        else
+                        {
 
-                        jogadorAtual = jogador2;
-                        cout << "\n\n"
-                             << nomeJogador2 << ", ";
-                    }
+                            jogadorAtual = jogador2;
+                            cout << "\n\n"
+                                 << nomeJogador2 << ", ";
+                        }
 
-                    cout << "qual a posicao que deseja realizar a jogada? ";
-                    cout << "Escolha a linha (entre 1 e 3): ";
-                    cin >> linha;
-                    cout << "Escolha a coluna (entre 1 e 3): ";
-                    cin >> coluna;
-
-                    // 1 funcao
-                    while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
-                    {
+                        cout << "qual a posicao que deseja realizar a jogada? ";
+                        cout << "Escolha a linha (entre 1 e 3): ";
+                        cin >> linha;
+                        cout << "Escolha a coluna (entre 1 e 3): ";
+                        cin >> coluna;
 
                         if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
                         {
@@ -324,14 +321,7 @@ int main()
                         {
                             cout << "\n\nPosicao ocupada! Escolha outra posicao!";
                         }
-
-                        cout << "\n\nQual a posicao que deseja realizar a jogada?";
-                        cout << "Escolha a linha (entre 1 e 3):";
-                        cin >> linha;
-                        cout << "Escolha a coluna (entre 1 e 3): \n";
-                        cin >> coluna;
-                    }
-                    // ate aqui
+                    } while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ');
 
                     *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
 
@@ -416,29 +406,34 @@ int main()
                         for (int jogada = 0; jogada < 9; jogada++)
                         {
 
-                            if (jogada % 2 == 0)
+                            do
                             {
-                                jogadorAtual = jogador1;
-                                cout << "\n\n"
-                                     << nomeJogador1 << ", qual a posicao que deseja realizar a jogada? ";
-                                cout << "Escolha a linha (entre 1 e 3): ";
-                                cin >> linha;
-                                cout << "Escolha a coluna (entre 1 e 3): ";
-                                cin >> coluna;
-                            }
+                                if (jogada % 2 == 0)
+                                {
+                                    jogadorAtual = jogador1;
+                                    cout << "\n\n"
+                                         << nomeJogador1 << ", qual a posicao que deseja realizar a jogada? ";
+                                    cout << "Escolha a linha (entre 1 e 3): ";
+                                    cin >> linha;
+                                    cout << "Escolha a coluna (entre 1 e 3): ";
+                                    cin >> coluna;
+                                }
 
-                            else
-                            {
-                                cout << "\n\nJogada do computador: \n";
-                                jogadorAtual = boot;
-                                cout << "\n\nBoot (O):";
-                                linha = (rand() % 3 + 1);
-                                coluna = (rand() % 3 + 1);
-                            }
-
-                            // 1 funcao
-                            while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
-                            {
+                                else
+                                {
+                                    do
+                                    {
+                                        cout << "\n\nJogada do computador: \n";
+                                        jogadorAtual = boot;
+                                        cout << "\n\nBoot (O):";
+                                        linha = (rand() % 3 + 1);
+                                        coluna = (rand() % 3 + 1);
+                                        if (*(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
+                                        {
+                                            cout << "\n\nPosicao ocupada! Escolha outra posicao!";
+                                        }
+                                    }while ((*(*(jogo + (linha - 1)) + (coluna - 1)) != ' '));
+                                }
 
                                 if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
                                 {
@@ -450,14 +445,7 @@ int main()
                                 {
                                     cout << "\n\nPosicao ocupada! Escolha outra posicao!";
                                 }
-
-                                cout << "\n\nQual a posicao que deseja realizar a jogada?";
-                                cout << "Escolha a linha (entre 1 e 3):";
-                                cin >> linha;
-                                cout << "Escolha a coluna (entre 1 e 3): \n";
-                                cin >> coluna;
-                            }
-                            // ate aqui
+                            } while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ');
 
                             *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
 
@@ -528,6 +516,9 @@ int main()
 
                         for (int jogada = 0; jogada < 9; jogada++)
                         {
+                            /*do{
+
+                            }while*/
 
                             if (jogada % 2 == 0)
                             {

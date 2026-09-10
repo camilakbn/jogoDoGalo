@@ -76,12 +76,7 @@ int main()
             *(jogo + (posicao - 1)) = jogadorAtual;
 
             std::cout << "\n\n\n\n\nAtualizacao do jogo da velha:\n";
-            std::cout << "| " << jogo[0] << " | " << jogo[1] << " | " << jogo[2] << " |\n";
-            std::cout << " ___________\n";
-            std::cout << "| " << jogo[3] << " | " << jogo[4] << " | " << jogo[5] << " |\n";
-            std::cout << " ___________\n";
-            std::cout << "| " << jogo[6] << " | " << jogo[7] << " | " << jogo[8] << " |\n";
-            std::cout << " ___________\n\n";
+            //mostrar tabuleiro
 
             for (int c = 0; c < 8; c++)
             {

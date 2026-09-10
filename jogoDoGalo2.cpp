@@ -17,6 +17,15 @@ apresentação: 16/09*/
 // tentar adicionar uma linha do ganhador
 // ajeitar pra o X sempre começar primeiro
 
+void mostrarTabuleiroAtt(char jogo[9])
+{
+    cout << " " << jogo[0] << " | " << jogo[1] << " | " << jogo[2] << "\n";
+    cout << "---+---+---\n";
+    cout << " " << jogo[3] << " | " << jogo[4] << " | " << jogo[5] << "\n";
+    cout << "---+---+---\n";
+    cout << " " << jogo[6] << " | " << jogo[7] << " | " << jogo[8] << "\n";
+}
+
 void mostrarTabuleiro(char jogo[3][3])
 {
     for (int i = 0; i < 3; i++)
@@ -117,107 +126,86 @@ bool mostrarJogador(ifstream &ficheiro, string &nomeJogador, int &numPartidas,
     }
 }
 
-void jogadaComputadorInteligente(char jogo[3][3], char pcInteligente, char jogador)
+// AJEITAR O COMPUTADOR INTELIGENTE
+void jogadaComputadorInteligente(char jogo[9], char pcInteligente, char jogador)
 {
     int jaJogou = 0;
 
+    int vitorias[8][3] = {
+        {0, 1, 2},
+        {3, 4, 5},
+        {6, 7, 8},
+        {0, 3, 6},
+        {1, 4, 7},
+        {2, 5, 8},
+        {0, 4, 8},
+        {2, 4, 6}};
+
     if (jaJogou == 0)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 3; j++)
+            if (jogo[i] == ' ')
             {
-                if (jogo[i][j] == ' ')
+                jogo[i] = pcInteligente; // para simular a jogada
+                for (int c = 0; c < 8; c++)
                 {
-                    jogo[i][j] = pcInteligente;
-                    if ((jogo[i][0] == pcInteligente && jogo[i][1] == pcInteligente && jogo[i][2] == pcInteligente) ||
-                        (jogo[0][j] == pcInteligente && jogo[1][j] == pcInteligente && jogo[2][j] == pcInteligente) ||
-                        (jogo[0][0] == pcInteligente && jogo[1][1] == pcInteligente && jogo[2][2] == pcInteligente) ||
-                        (jogo[0][2] == pcInteligente && jogo[1][1] == pcInteligente && jogo[2][0] == pcInteligente))
+                    if (jogo[vitorias[c][0]] != ' ' && jogo[vitorias[c][0]] == jogo[vitorias[c][1]] && jogo[vitorias[c][1]] == jogo[vitorias[c][2]])
                     {
-                        jaJogou = 1;
-                        break;
+                        return;
                     }
-                    jogo[i][j] = ' ';
                 }
+                jogo[i] = ' '; // tira a simulação
             }
-            if (jaJogou == 1)
-                break;
         }
     }
 
     if (jaJogou == 0)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 3; j++)
+            if (jogo[i] == ' ')
             {
-                if (jogo[i][j] == ' ')
+                jogo[i] = jogador;
+                for (int c = 0; c < 8; c++)
                 {
-                    jogo[i][j] = jogador;
-                    if ((jogo[i][0] == jogador && jogo[i][1] == jogador && jogo[i][2] == jogador) ||
-                        (jogo[0][j] == jogador && jogo[1][j] == jogador && jogo[2][j] == jogador) ||
-                        (jogo[0][0] == jogador && jogo[1][1] == jogador && jogo[2][2] == jogador) ||
-                        (jogo[0][2] == jogador && jogo[1][1] == jogador && jogo[2][0] == jogador))
+                    if (jogo[vitorias[c][0]] != ' ' && jogo[vitorias[c][0]] == jogo[vitorias[c][1]] && jogo[vitorias[c][1]] == jogo[vitorias[c][2]])
                     {
-                        jogo[i][j] = pcInteligente;
-                        jaJogou = 1;
-                        break;
+                        jogo[i] = pcInteligente;
+                        return;
                     }
-                    jogo[i][j] = ' ';
                 }
-            }
-            if (jaJogou == 1)
-            {
-                break;
+                jogo[i] = ' ';
             }
         }
     }
 
-    if (jaJogou == 0 && jogo[1][1] == ' ')
-    {
-        jogo[1][1] = pcInteligente;
-        jaJogou = 1;
-    }
-
-    if (jaJogou == 0 && jogo[0][0] == ' ')
-    {
-        jogo[0][0] = pcInteligente;
-        jaJogou = 1;
-    }
-    if (jaJogou == 0 && jogo[0][2] == ' ')
-    {
-        jogo[0][2] = pcInteligente;
-        jaJogou = 1;
-    }
-    if (jaJogou == 0 && jogo[2][0] == ' ')
-    {
-        jogo[2][0] = pcInteligente;
-        jaJogou = 1;
-    }
-    if (jaJogou == 0 && jogo[2][2] == ' ')
-    {
-        jogo[2][2] = pcInteligente;
-        jaJogou = 1;
-    }
-
     if (jaJogou == 0)
     {
-        for (int i = 0; i < 3; i++)
+        if (jogo[4] == ' ')
         {
-            for (int j = 0; j < 3; j++)
-            {
-                if (jogo[i][j] == ' ')
-                {
-                    jogo[i][j] = pcInteligente;
-                    jaJogou = 1;
-                    break;
-                }
-            }
-            if (jaJogou == 1)
-            {
-                break;
-            }
+            jogo[4] = pcInteligente;
+        }
+
+        else if (jogo[0] == ' ')
+        {
+            jogo[0] = pcInteligente;
+        }
+        else if (jogo[2] == ' ')
+        {
+            jogo[2] = pcInteligente;
+        }
+        else if (jogo[5] == ' ')
+        {
+            jogo[5] = pcInteligente;
+        }
+        else if (jogo[8] == ' ')
+        {
+            jogo[8] = pcInteligente;
+        }
+        else
+        {
+            pcInteligente = (rand() % 9 + 1); // ver se isto está certo
         }
     }
 }
@@ -225,21 +213,33 @@ void jogadaComputadorInteligente(char jogo[3][3], char pcInteligente, char jogad
 int main()
 {
 
+    char mostrarJogo[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
     int linha, coluna;
     char jogador1 = 'X';
     char jogador2 = 'O';
-    char jogadorAtual;
+    char jogadorAtual = ' ';
+    char vencedor = ' ';
     string nomeJogador1 = "";
     string nomeJogador2 = "";
     string nomeJogador = "";
     int escolha;
     int finalJogo;
     int opcao;
-    char posicao;
+    int posicao = 0;
     int nivelBoot;
     char pcInteligente = 'O';
     char boot = 'O';
     srand(time(0));
+
+    int vitorias[8][3] = {
+        {0, 1, 2},
+        {3, 4, 5},
+        {6, 7, 8},
+        {0, 3, 6},
+        {1, 4, 7},
+        {2, 5, 8},
+        {0, 4, 8},
+        {2, 4, 6}};
 
     do
     {
@@ -257,7 +257,10 @@ int main()
             if (opcao == 1)
             {
 
-                char jogo[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+                char jogo[9] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+                vencedor = ' ';
+                jogador1 = 'X';
+                boot = 'O';
 
                 cout << "Insira o nome do primeiro jogador: ";
                 getline(cin >> ws, nomeJogador1);
@@ -267,7 +270,7 @@ int main()
 
                 /*do
                 {
-                    //CONSERTAR ISSO E O JOGADOR INTELIGENTE
+                    //CONSERTAR ISSO
                     cout << nomeJogador1 << ", voce quer ser 'X ou 'O'?\nDigite: 1 - 'X'\n2 - 'O'";
                     cin >> escolha;
                     if (escolha == 1)
@@ -282,115 +285,113 @@ int main()
                     }
                 } while (escolha < 1 || escolha > 2);*/
 
-                cout << nomeJogador1 << " sera " << jogador1 << " e " << nomeJogador2 << " sera " << jogador2 << "\n\n";
+                cout << nomeJogador1 << " sera '" << jogador1 << "' e " << nomeJogador2 << " sera '" << jogador2 << "'\n\n";
                 cout << "Aqui esta o jogo da velha:\n";
-                mostrarTabuleiro(jogo);
+                mostrarTabuleiro(mostrarJogo); // apenas mostra o tabuleiro
+                cout << "\n\n";
 
-                for (int jogada = 0; jogada < 9; jogada++)
+                for (int i = 0; i < 9; i++) // entro no loop do char jogo[9]
                 {
-
-                    if (jogada % 2 == 0)
+                    do
                     {
-                        jogadorAtual = jogador1;
-                        cout << "\n\n"
-                             << nomeJogador1 << ", ";
-                    }
-
-                    else
-                    {
-
-                        jogadorAtual = jogador2;
-                        cout << "\n\n"
-                             << nomeJogador2 << ", ";
-                    }
-
-                    cout << "qual a posicao que deseja realizar a jogada? ";
-                    cout << "Escolha a linha (entre 1 e 3): ";
-                    cin >> linha;
-                    cout << "Escolha a coluna (entre 1 e 3): ";
-                    cin >> coluna;
-
-                    // 1 funcao
-                    while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
-                    {
-
-                        if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
+                        if (i % 2 == 0)
                         {
-
-                            cout << "\n\nPosicao invalida! Escolha outra posicao!";
-                        }
-
-                        else if (*(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
-                        {
-                            cout << "\n\nPosicao ocupada! Escolha outra posicao!";
-                        }
-
-                        cout << "\n\nQual a posicao que deseja realizar a jogada?";
-                        cout << "Escolha a linha (entre 1 e 3):";
-                        cin >> linha;
-                        cout << "Escolha a coluna (entre 1 e 3): \n";
-                        cin >> coluna;
-                    }
-                    // ate aqui
-
-                    *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
-
-                    cout << "\n";
-                    mostrarTabuleiro(jogo);
-
-                    // 1 funcao vencedor
-                    if (
-                        (jogo[0][0] == jogadorAtual && jogo[0][1] == jogadorAtual && jogo[0][2] == jogadorAtual) ||
-                        (jogo[1][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[1][2] == jogadorAtual) ||
-                        (jogo[2][0] == jogadorAtual && jogo[2][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-
-                        (jogo[0][0] == jogadorAtual && jogo[1][0] == jogadorAtual && jogo[2][0] == jogadorAtual) ||
-                        (jogo[0][1] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][1] == jogadorAtual) ||
-                        (jogo[0][2] == jogadorAtual && jogo[1][2] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-
-                        (jogo[0][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-                        (jogo[0][2] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][0] == jogadorAtual))
-                    {
-                        if (jogadorAtual == jogador1)
-                        {
+                            jogadorAtual = jogador1;
                             cout << "\n\n"
-                                 << nomeJogador1 << " venceu!\n\n";
-
-                            mostrarTabuleiro(jogo);
-
-                            guardarJogador(nomeJogador1, 1, 1, 0, 0);
-                            guardarJogador(nomeJogador2, 1, 0, 1, 0);
-                            break;
+                                 << nomeJogador1 << ", ";
                         }
-                        else if (jogadorAtual == jogador2)
+                        else
                         {
+                            jogadorAtual = jogador2;
                             cout << "\n\n"
-                                 << nomeJogador2 << " venceu!\n\n";
-
-                            mostrarTabuleiro(jogo);
-
-                            guardarJogador(nomeJogador1, 1, 0, 1, 0);
-                            guardarJogador(nomeJogador2, 1, 1, 0, 0);
-                            break;
+                                 << nomeJogador2 << ", ";
                         }
-                    }
-                    // ate aqui
 
-                    // 1 funcao empate
-                    if (jogada == 8)
+                        cout << "escolha uma posicao do jogo da velha: ";
+                        cin >> posicao;
+
+                        // validação da jogada
+                        if (posicao < 1 || posicao > 9)
+                        {
+                            cout << "\nPosicao invalida, escolha outra posicao!\n";
+                        }
+
+                        else if (jogo[posicao - 1] != ' ')
+                        {
+                            cout << "\nPosicao ocupada, escolha outra posicao!\n";
+                        }
+
+                    } while (posicao < 1 || posicao > 9 || jogo[posicao - 1] != ' ');
+
+                    *(jogo + (posicao - 1)) = jogadorAtual; // salvo a jogada
+                    // a jogada só pode ser salva fora do while, pra ele não salvar mais de uma resposta
+
+                    cout << "\n\n\n\n\nAtualizacao do jogo da velha:\n";
+                    mostrarTabuleiroAtt(jogo); // mostra o tabuleiro atualizado com o vetor jogo
+
+                    // verificar vencedor
+                    for (int j = 0; j < 8; j++)
                     {
+                        if (jogo[vitorias[j][0]] != ' ' && jogo[vitorias[j][0]] == jogo[vitorias[j][1]] && jogo[vitorias[j][1]] == jogo[vitorias[j][2]])
+                        /*explicação do loop:
+                        a primeira parte verifica se o campo está vazio -> jogo[vitorias[j][0]] != ' '
+                        a segunda parte depois do primeiro && significa:
+                        o que está na posição 0 é igual ao que está na posição 1?
+                        e o que está na posição 1 é igual ao que está na posição 2?"
+                        se der falso ele pula pra o 1 do loop
+                        se der vddeiro significa que as 3 posicoes estão preenchidas
+                        com X ou 0*/
+                        {
+                            vencedor = jogo[vitorias[j][0]];
+                            break;
+                            // salva o jogador que ganhou e dá break pra ele não fazer o loop todo
+                        }
+                    } // fim do verificar o vencedor
 
-                        cout << "\n\nEmpate!\n\n";
-
-                        mostrarTabuleiro(jogo);
-
-                        guardarJogador(nomeJogador1, 1, 0, 0, 1);
-                        guardarJogador(nomeJogador2, 1, 0, 0, 1);
+                    if (vencedor != ' ')
+                    {
                         break;
+                        // se o vencedor for diferente de vazio, para esse loop
+                        // pq no anterior apenas para o outro loop do for c = 8
+                        // e esse para o loop do for i = 9
                     }
-                    // ate aqui
+                } // fim do loop de jogo[9]
+
+                if (vencedor == jogador1)
+                {
+                    cout << "\n\n"
+                         << nomeJogador1 << " venceu!\n\n";
+
+                    mostrarTabuleiroAtt(jogo);
+
+                    guardarJogador(nomeJogador1, 1, 1, 0, 0); // partida, vitoria, derrota, empate
+                    guardarJogador(nomeJogador2, 1, 0, 1, 0);
+                    break;
+                }
+                else if (vencedor == jogador2)
+                {
+                    cout << "\n\n"
+                         << nomeJogador2 << " venceu!\n\n";
+
+                    mostrarTabuleiroAtt(jogo);
+
+                    guardarJogador(nomeJogador1, 1, 0, 1, 0);
+                    guardarJogador(nomeJogador2, 1, 1, 0, 0);
+                    break;
+                }
+                else
+                {
+                    // tentar fazer ele parar quando o jogo já der empate
+                    cout << "\n\nEmpate!\n\n";
+
+                    mostrarTabuleiroAtt(jogo);
+
+                    guardarJogador(nomeJogador1, 1, 0, 0, 1);
+                    guardarJogador(nomeJogador2, 1, 0, 0, 1);
+                    break;
                 }
             }
+
             else if (opcao == 2)
             {
                 do
@@ -401,227 +402,204 @@ int main()
                     {
                         cout << "Bem-vindo ao nivel facil!\n";
 
-                        // add codigo
-
-                        char jogo[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+                        // essa parte é pra limpar as variáveis, pq os valores delas estão salvos da opção 1
+                        char jogo[9] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+                        vencedor = ' ';
+                        jogador1 = 'X';
+                        boot = 'O';
 
                         cout << "Insira o nome do jogador: ";
                         getline(cin >> ws, nomeJogador1);
 
                         cout << "O jogador sera o 'X' e o computador sera o 'O'\n\n";
                         cout << "Aqui esta o jogo da velha:\n";
-                        mostrarTabuleiro(jogo);
+                        mostrarTabuleiro(mostrarJogo);
 
-                        // add codigo
-                        for (int jogada = 0; jogada < 9; jogada++)
+                        for (int i = 0; i < 9; i++)
                         {
-
-                            if (jogada % 2 == 0)
+                            do
                             {
-                                jogadorAtual = jogador1;
-                                cout << "\n\n"
-                                     << nomeJogador1 << ", qual a posicao que deseja realizar a jogada? ";
-                                cout << "Escolha a linha (entre 1 e 3): ";
-                                cin >> linha;
-                                cout << "Escolha a coluna (entre 1 e 3): ";
-                                cin >> coluna;
-                            }
-
-                            else
-                            {
-                                cout << "\n\nJogada do computador: \n";
-                                jogadorAtual = boot;
-                                cout << "\n\nBoot (O):";
-                                linha = (rand() % 3 + 1);
-                                coluna = (rand() % 3 + 1);
-                            }
-
-                            // 1 funcao
-                            while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
-                            {
-
-                                if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
+                                if (i % 2 == 0)
                                 {
-
-                                    cout << "\n\nPosicao invalida! Escolha outra posicao!";
+                                    jogadorAtual = jogador1;
+                                    cout << "\n\n"
+                                         << nomeJogador1 << ", escolha uma posicao do jogo da velha: ";
+                                    cin >> posicao;
+                                }
+                                else
+                                {
+                                    do
+                                    {
+                                        cout << "\n\nJogada do computador: \n";
+                                        jogadorAtual = boot;
+                                        cout << "\n\nBoot (O):";
+                                        posicao = (rand() % 9 + 1);
+                                        /*o modulo de 9 sempre vai ser de 0 a 8
+                                        pq mais 1? pq quando usa o ponteiro usa com -1
+                                        pq o usuario sempre vai colocar 1 acima (pq o vetor é 0 based)*/
+                                        if (jogo[posicao - 1] == 'X' || jogo[posicao - 1] == 'O')
+                                        {
+                                            cout << "\nO computador escolheu uma posicao ocupada!\n";
+                                        }
+                                    } while (jogo[posicao - 1] != ' '); //o boot só sai quando escolher uma opção vazia
                                 }
 
-                                else if (*(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
+                                if (posicao < 1 || posicao > 9)
                                 {
-                                    cout << "\n\nPosicao ocupada! Escolha outra posicao!";
+                                    cout << "\nPosicao invalida, escolha outra posicao!\n";
                                 }
 
-                                cout << "\n\nQual a posicao que deseja realizar a jogada?";
-                                cout << "Escolha a linha (entre 1 e 3):";
-                                cin >> linha;
-                                cout << "Escolha a coluna (entre 1 e 3): \n";
-                                cin >> coluna;
-                            }
-                            // ate aqui
+                                else if (jogo[posicao - 1] == 'X' || jogo[posicao - 1] == 'O')
+                                {
+                                    cout << "\nPosicao ocupada, escolha outra posicao!\n";
+                                }
 
-                            *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
+                            } while (posicao < 1 || posicao > 9 || jogo[posicao - 1] == 'X' || jogo[posicao - 1] == 'O');
 
-                            cout << "\n";
-                            mostrarTabuleiro(jogo);
+                            *(jogo + (posicao - 1)) = jogadorAtual;
 
-                            // 1 funcao vencedor
-                            if (
-                                (jogo[0][0] == jogadorAtual && jogo[0][1] == jogadorAtual && jogo[0][2] == jogadorAtual) ||
-                                (jogo[1][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[1][2] == jogadorAtual) ||
-                                (jogo[2][0] == jogadorAtual && jogo[2][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
+                            cout << "\n\n\n\n\nAtualizacao do jogo da velha:\n";
+                            mostrarTabuleiroAtt(jogo);
 
-                                (jogo[0][0] == jogadorAtual && jogo[1][0] == jogadorAtual && jogo[2][0] == jogadorAtual) ||
-                                (jogo[0][1] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][1] == jogadorAtual) ||
-                                (jogo[0][2] == jogadorAtual && jogo[1][2] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-
-                                (jogo[0][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-                                (jogo[0][2] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][0] == jogadorAtual))
+                            for (int c = 0; c < 8; c++)
                             {
-                                if (jogadorAtual == jogador1)
+                                if (jogo[vitorias[c][0]] != ' ' && jogo[vitorias[c][0]] == jogo[vitorias[c][1]] && jogo[vitorias[c][1]] == jogo[vitorias[c][2]])
                                 {
-                                    cout << "\n"
-                                         << nomeJogador1 << " venceu!\n";
-
-                                    mostrarTabuleiro(jogo);
-
-                                    guardarJogador(nomeJogador1, 1, 1, 0, 0);
-                                    break;
-                                }
-                                else if (jogadorAtual == boot)
-                                {
-                                    cout << "\nO computador venceu!\n";
-
-                                    mostrarTabuleiro(jogo);
-
-                                    guardarJogador(nomeJogador1, 1, 0, 1, 0);
+                                    vencedor = jogo[vitorias[c][0]];
                                     break;
                                 }
                             }
-                            // ate aqui
 
-                            // 1 funcao empate
-                            if (jogada == 8)
+                            if (vencedor != ' ')
                             {
-
-                                cout << "\n\nEmpate!\n";
-
-                                mostrarTabuleiro(jogo);
-
-                                guardarJogador(nomeJogador1, 1, 0, 0, 1);
                                 break;
                             }
-                            // ate aqui
+                        }
+
+                        if (vencedor == jogador1)
+                        {
+                            cout << "\n\n"
+                                 << nomeJogador1 << " venceu!\n\n";
+
+                            mostrarTabuleiroAtt(jogo);
+
+                            guardarJogador(nomeJogador1, 1, 1, 0, 0);
+                            break;
+                        }
+                        else if (vencedor == boot)
+                        {
+                            cout << "\n\n"
+                                 << "O computador venceu!\n\n";
+
+                            mostrarTabuleiroAtt(jogo);
+
+                            guardarJogador(nomeJogador1, 1, 0, 1, 0);
+                            break;
+                        }
+                        else
+                        {
+                            cout << "\n\nEmpate!\n\n";
+
+                            mostrarTabuleiroAtt(jogo);
+
+                            guardarJogador(nomeJogador1, 1, 0, 0, 1);
+                            break;
                         }
                     }
                     else if (nivelBoot == 2)
                     {
                         cout << "Bem-vindo ao nivel normal!\n";
 
-                        char jogo[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+                        char jogo[9] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+                        vencedor = ' ';
+                        jogador1 = 'X';
+                        boot = 'O';
 
                         cout << "Insira o nome do jogador: ";
                         getline(cin >> ws, nomeJogador1);
 
                         cout << "O jogador sera o 'X' e o computador sera o 'O'\n\n";
                         cout << "Aqui esta o jogo da velha:\n";
-                        mostrarTabuleiro(jogo);
+                        mostrarTabuleiro(mostrarJogo);
 
-                        for (int jogada = 0; jogada < 9; jogada++)
+                        for (int i = 0; i < 9; i++)
                         {
-
-                            if (jogada % 2 == 0)
+                            do
                             {
-                                jogadorAtual = jogador1;
-                                cout << "\n\n"
-                                     << nomeJogador1 << ", qual a posicao que deseja realizar a jogada? ";
-                                cout << "Escolha a linha (entre 1 e 3): ";
-                                cin >> linha;
-                                cout << "Escolha a coluna (entre 1 e 3): ";
-                                cin >> coluna;
-
-                                // 1 funcao
-                                while (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || *(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
+                                if (i % 2 == 0)
                                 {
-
-                                    if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
-                                    {
-
-                                        cout << "\n\nPosicao invalida! Escolha outra posicao!";
-                                    }
-
-                                    else if (*(*(jogo + (linha - 1)) + (coluna - 1)) != ' ')
-                                    {
-                                        cout << "\n\nPosicao ocupada! Escolha outra posicao!";
-                                    }
-
-                                    cout << "\n\nQual a posicao que deseja realizar a jogada?";
-                                    cout << "Escolha a linha (entre 1 e 3):";
-                                    cin >> linha;
-                                    cout << "Escolha a coluna (entre 1 e 3): \n";
-                                    cin >> coluna;
+                                    jogadorAtual = jogador1;
+                                    cout << "\n\n"
+                                         << nomeJogador1 << ", escolha uma posicao do jogo da velha: ";
+                                    cin >> posicao;
                                 }
-                                // ate aqui
-
-                                *(*(jogo + (linha - 1)) + (coluna - 1)) = jogadorAtual;
-                            }
-
-                            else
-                            {
-                                cout << "\n\nJogada do computador: \n";
-                                jogadorAtual = pcInteligente;
-                                jogadaComputadorInteligente(jogo, pcInteligente, jogador1);
-                            }
-
-                            cout << "\n";
-                            mostrarTabuleiro(jogo);
-
-                            // 1 funcao vencedor
-                            if (
-                                (jogo[0][0] == jogadorAtual && jogo[0][1] == jogadorAtual && jogo[0][2] == jogadorAtual) ||
-                                (jogo[1][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[1][2] == jogadorAtual) ||
-                                (jogo[2][0] == jogadorAtual && jogo[2][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-
-                                (jogo[0][0] == jogadorAtual && jogo[1][0] == jogadorAtual && jogo[2][0] == jogadorAtual) ||
-                                (jogo[0][1] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][1] == jogadorAtual) ||
-                                (jogo[0][2] == jogadorAtual && jogo[1][2] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-
-                                (jogo[0][0] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][2] == jogadorAtual) ||
-                                (jogo[0][2] == jogadorAtual && jogo[1][1] == jogadorAtual && jogo[2][0] == jogadorAtual))
-                            {
-                                if (jogadorAtual == jogador1)
+                                else
                                 {
-                                    cout << "\n"
-                                         << nomeJogador1 << " venceu!\n";
-
-                                    mostrarTabuleiro(jogo);
-
-                                    guardarJogador(nomeJogador1, 1, 1, 0, 0);
-                                    break;
+                                    cout << "\n\nJogada do computador: \n";
+                                    jogadorAtual = pcInteligente;
+                                    jogadaComputadorInteligente(jogo, pcInteligente, jogador1);
                                 }
-                                else if (jogadorAtual == pcInteligente)
+
+                                if (posicao < 1 || posicao > 9)
                                 {
-                                    cout << "\nO computador venceu!\n";
+                                    cout << "\nPosicao invalida, escolha outra posicao!\n";
+                                }
 
-                                    mostrarTabuleiro(jogo);
+                                else if (jogo[posicao - 1] == 'X' || jogo[posicao - 1] == 'O')
+                                {
+                                    cout << "\nPosicao ocupada, escolha outra posicao!\n";
+                                }
 
-                                    guardarJogador(nomeJogador1, 1, 0, 1, 0);
+                            } while (posicao < 1 || posicao > 9 || jogo[posicao - 1] == 'X' || jogo[posicao - 1] == 'O');
+
+                            *(jogo + (posicao - 1)) = jogadorAtual;
+
+                            cout << "\n\n\n\n\nAtualizacao do jogo da velha:\n";
+                            mostrarTabuleiroAtt(jogo);
+
+                            for (int c = 0; c < 8; c++)
+                            {
+                                if (jogo[vitorias[c][0]] != ' ' && jogo[vitorias[c][0]] == jogo[vitorias[c][1]] && jogo[vitorias[c][1]] == jogo[vitorias[c][2]])
+                                {
+                                    vencedor = jogo[vitorias[c][0]];
                                     break;
                                 }
                             }
-                            // ate aqui
 
-                            // 1 funcao empate
-                            if (jogada == 8)
+                            if (vencedor != ' ')
                             {
-
-                                cout << "\n\nEmpate!\n";
-
-                                mostrarTabuleiro(jogo);
-
-                                guardarJogador(nomeJogador1, 1, 0, 0, 1);
                                 break;
                             }
-                            // ate aqui
+                        }
+
+                        if (vencedor == jogador1)
+                        {
+                            cout << "\n\n"
+                                 << nomeJogador1 << " venceu!\n\n";
+
+                            mostrarTabuleiroAtt(jogo);
+
+                            guardarJogador(nomeJogador1, 1, 1, 0, 0);
+                            break;
+                        }
+                        else if (vencedor == pcInteligente)
+                        {
+                            cout << "\n\n"
+                                 << "O computador venceu!\n\n";
+
+                            mostrarTabuleiroAtt(jogo);
+
+                            guardarJogador(nomeJogador1, 1, 0, 1, 0);
+                            break;
+                        }
+                        else
+                        {
+                            cout << "\n\nEmpate!\n\n";
+
+                            mostrarTabuleiroAtt(jogo);
+
+                            guardarJogador(nomeJogador1, 1, 0, 0, 1);
+                            break;
                         }
                     }
                 } while (nivelBoot < 1 || nivelBoot > 2);
@@ -651,10 +629,12 @@ int main()
             }
         } while (opcao < 1 || opcao > 4);
 
-        cout << "\n\nDeseja voltar ao menu inicial?\n1 - Sim\n2 - Nao\n";
+        cout << "\n\nDeseja sair do jogo?\n1 - Sim\n2 - Nao\n";
         cin >> finalJogo;
+    } while (finalJogo == 2);
 
-    } while (finalJogo == 1);
+    cout << "\n\nObrigada por jogar conosco!\n\n";
+    cout << "Copyrights © 2026 - Camila, Betania, Sarah";
 
     return 0;
 }
