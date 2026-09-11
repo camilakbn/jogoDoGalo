@@ -1,4 +1,24 @@
 camila
-6 4 0 2
+54 20 7 27
 alexandre
 2 0 1 1
+guilherme
+1 0 1 0
+C
+1 1 0 0
+CAMILA
+1 1 0 0
+CAMila
+1 0 0 1
+2
+4 0 2 2
+betania
+12 0 5 7
+c
+12 4 1 7
+sarah
+1 1 0 0
+b
+9 2 2 5
+a
+3 0 1 2
